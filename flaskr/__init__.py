@@ -15,9 +15,12 @@ def create_app(test_config=None):
 
     os.makedirs(app.instance_path, exist_ok=True)
 
+	# init db
     from . import db
-    from .api.auth import auth_bp
     db.init_app(app)
+    
+	# regiser auth
+    from .api.auth import auth_bp
     app.register_blueprint(auth_bp)
 
     @app.route('/hello')
