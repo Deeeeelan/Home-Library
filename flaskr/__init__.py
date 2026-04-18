@@ -17,8 +17,10 @@ def create_app(test_config=None):
 
     from . import db
     from .api.auth import auth_bp
+    from .api.discovery import discovery_bp
     db.init_app(app)
     app.register_blueprint(auth_bp)
+    app.register_blueprint(discovery_bp)
 
     @app.route('/hello')
     def hello():
