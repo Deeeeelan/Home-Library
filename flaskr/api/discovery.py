@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, abort, request
+from flask import Blueprint, request
 import json
 from fuzzywuzzy import fuzz
 
@@ -7,7 +7,6 @@ discovery_bp = Blueprint('discovery', __name__, url_prefix='/api')
 @discovery_bp.route('/user/<username>')
 def user(username):
 
-    print("username: ", username)
     with open("flaskr/data/users.json", "r") as f:
         user_database = json.load(f)
         print(user_database)
@@ -30,7 +29,6 @@ def search():
 
     with open("flaskr/data/books.json", "r") as f:
         book_database = json.load(f)
-        print(book_database)
         for book in book_database:
             met_criteria = False
             if book['zip_code'] == zip_code:
@@ -40,7 +38,6 @@ def search():
             
             if name:
                 fuzzy_result = fuzz.ratio(name, book['name'])
-                print(fuzzy_result)
                 if fuzzy_result < 60:
                     met_criteria = False
 
