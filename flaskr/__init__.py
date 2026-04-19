@@ -17,14 +17,20 @@ def create_app(test_config=None):
 
 	# init db
     from . import db
-    from .api.auth import auth_bp
-    from .api.discovery import discovery_bp
     db.init_app(app)
     
 	# regiser auth
     from .api.auth import auth_bp
     app.register_blueprint(auth_bp)
+
+    from .api.discovery import discovery_bp
     app.register_blueprint(discovery_bp)
+
+    from .api.checkout import checkout_bp
+    app.register_blueprint(checkout_bp)
+
+    from .api.user import user_bp
+    app.register_blueprint(user_bp)
 
     @app.route('/')
     def index():
