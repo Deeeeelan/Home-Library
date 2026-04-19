@@ -1,10 +1,11 @@
 window.onload = async function () {
 
     window.dom={};
+    document.querySelectorAll("[id]").forEach(el => window.dom[el.id] = el);
 
     async function search_books() {
         dom.book_container.innerHTML = "";
-        const response = await fetch("http://127.0.0.1:5000/api/search?" + new URLSearchParams({
+        const response = await fetch("/api/search?" + new URLSearchParams({
             zip_code: dom.zip_code.value,
             name: dom.book_name.value,
             author: dom.author_name.value,
@@ -26,16 +27,23 @@ window.onload = async function () {
                 <button type="button" class="request_book">Request</button>`;
             dom.book_container.appendChild(book_el);
             book_el.querySelector("button").onclick = async function () {
-                console.log(book.name)
-                const response = await fetch("http://127.0.0.1:5000/api/book/" + book.id + "/checkout_req", {
+                const response = await fetch("/api/book/" + book.id + "/checkout_req", {
                     method: "POST",
-                    // body: JSON.stringify({ jwt: }), // TODO
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ jwt: localStorage.getItem("jwt"), 
+                    }),
                 })
+		        const result = await response.json();
+                if (result.success) {
+                    alert("Requested Book!");
+                    return
+                }
             }
         })
     }
 
-    document.querySelectorAll("[id]").forEach(el => window.dom[el.id] = el);
     console.log(window.dom);
     // dom.main_search_button.onclick = search_books;
     dom.filter_button.onclick = search_books;

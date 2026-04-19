@@ -67,12 +67,12 @@ def request_checkout():
             books_db.append(new_book)
             books_fp.seek(0)
             books_fp.write(json.dumps(books_db))
-            books_fp.truncate()
+            # books_fp.truncate()
             
             records_db.append(new_record)
             records_fp.seek(0)
             records_fp.write(json.dumps(records_db))
-            records_db.truncate()
+            # records_db.truncate()
             return respond_success(), 200
             
     
