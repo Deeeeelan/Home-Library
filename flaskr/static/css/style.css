@@ -75,10 +75,10 @@ button:hover {
 
 .filter {
     font-size: 24px;
-        border-radius: 4px;
-
+    border-radius: 4px;
 }
 #options {
+    margin: auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -87,15 +87,27 @@ button:hover {
 #content { /* TODO: figure out how to align content horizontally */
     width: 100vw;
     height: 1028px;
-    align-items: normal;
     /* display: inline-block; */
 }
 
 #filter_container {
-    margin: 0 10px;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
     width: 256px;
     height: 20%;
     font-size: 24px;
+    text-align: center;
+}
+#filter_button {
+    margin: 10px auto;
+}
+#main_search_button {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+    margin: auto;
 }
 
 #book_container {

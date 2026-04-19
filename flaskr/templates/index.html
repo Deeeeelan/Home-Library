@@ -17,7 +17,7 @@
     <p id="short_desc">Insert really short description here</p>
 
     <input id="zip_code" class="textbox" type="text" placeholder="01234">
-    <button type="button" onclick="search_books()" class="search_button">Search</button>
+    <!--<button type="button" id="main_search_button" class="search_button">Search</button>-->
 
     <div id="options">
         <button type="button" onclick="location.href='login'">Login</button>
@@ -25,17 +25,14 @@
     </div>
     <div id="content">
         <div id="filter_container">
-            Book Name :  <input id="book_name" class="textbox filter" type="text" placeholder="Name"><br>
-            Author Name :  <input id="author_name" class="textbox filter" type="text" placeholder="John Doe">
-            <button type="button" onclick="search_books()" class="search_button">Search</button>
+            Book Name:
+            <input id="book_name" class="textbox filter" type="text" placeholder="Name">
+            Author Name:
+            <input id="author_name" class="textbox filter" type="text" placeholder="John Doe">
+            <button type="button" id="filter_button" class="search_button">Search</button>
         </div>
         <div id="book_container">
-            <div class="book">
-                <h2 class="book_title"> Book Title </h2>
-                <h3 class="author"> By author </h3>
-                <p class="book_desc"> Aute eu commodo dolor tempor laboris ex. Laboris velit qui exercitation enim sunt cupidatat do ipsum sit est duis mollit. Occaecat ea veniam labore non cupidatat excepteur qui laborum aliqua occaecat occaecat reprehenderit et minim nisi. </p>
-                <button type="button" class="request_book">Request</button>
-            </div>
+
         </div>
     </div>
 </body>

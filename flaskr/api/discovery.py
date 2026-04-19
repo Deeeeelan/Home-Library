@@ -30,6 +30,7 @@ def search():
 	zip_code = request.args.get('zip_code')
 	name = request.args.get('name')
 	author = request.args.get('author')
+	print(request.args)
 
 	found = []
 
