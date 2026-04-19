@@ -6,7 +6,7 @@ from datetime import timezone
 dotenv.load_dotenv()
 JWT_SECRET = os.environ['JWT_SECRET']
 
-def jwt_tok_generate (user_id, valid_for_days=-3):
+def jwt_tok_generate (user_id, valid_for_days=3):
 	now = datetime.datetime.now(tz=timezone.utc)
 	generated_jwt = jwt.encode({
 		'iat': now,
