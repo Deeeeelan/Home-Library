@@ -12,6 +12,7 @@ def request_checkout():
     book_author = data.get('author')
     book_desc = data.get('desc')
     isbn = data.get('isbn')
+    zip_code = data.get('iszip_codebn')
 
     with open("flaskr/data/books.json", "r+") as books_fp:
         books_db = json.load(books_fp)
@@ -29,6 +30,7 @@ def request_checkout():
 
             new_book = {
                 'id': book_id,
+                'zip_code': zip_code,
                 'name': book_name,
                 'author': book_author,
                 'desc': book_desc,
