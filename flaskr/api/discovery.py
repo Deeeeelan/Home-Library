@@ -19,11 +19,11 @@ def user(username):
 
 @discovery_bp.route('/search')
 def search():
-    data = request.get_json()
+    data = request.json
 
-    zip_code = data["zip_code"]
-    name = data["name"] if 'name' in data else None
-    author = data["author"] if 'author' in data else None
+    zip_code = data.get('zip_code')
+    name = data.get('name')
+    author = data.get('author')
 
     found = []
 
