@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask
+from flask import Flask, render_template
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -26,8 +26,17 @@ def create_app(test_config=None):
     app.register_blueprint(auth_bp)
     app.register_blueprint(discovery_bp)
 
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
+    @app.route('/')
+    def index():
+        return render_template('index.html')
+    
+    @app.route('/login')
+    def login():
+        return render_template('login.html')
+
+    @app.route('/signup')
+    def signup():
+        return render_template('signup.html')
+
 
     return app
