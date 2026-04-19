@@ -1,14 +1,8 @@
 from flask import Blueprint, render_template, abort, request
 import json
 import hashlib
-import jwt
-import dotenv
-import os
-import datetime
-from datetime import timezone
 import uuid
-dotenv.load_dotenv()
-JWT_SECRET = os.environ['JWT_SECRET']
+from ..jwtman import jwt_tok_generate, jwt_tok_validate
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/api')
 
@@ -25,12 +19,7 @@ def login():
 		user_found = next((user for user in users_db if ((user['username'] == username and user['pwhash'] == pwhash))), False)
 		
 		if user_found:
-			now = datetime.datetime.now(tz=timezone.utc)
-			generated_jwt = jwt.encode({
-				'iat': now,
-				'exp': now + datetime.timedelta(days=3),
-				'sub': user_found['id'],
-			}, JWT_SECRET, algorithm='HS256')
+			generated_jwt = jwt_tok_generate(user_found['id'])
 			return json.dumps({
 				'success': True,
 				'jwt': generated_jwt,
