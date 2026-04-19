@@ -6,6 +6,7 @@ import dotenv
 import os
 import datetime
 from datetime import timezone
+import uuid
 dotenv.load_dotenv()
 JWT_SECRET = os.environ['JWT_SECRET']
 
@@ -15,16 +16,13 @@ auth_bp = Blueprint('auth', __name__, url_prefix='/api')
 def login():
 	data = request.json
 	
-	username = data.get("username")
-	password = data.get("password")
+	username = data.get('username')
+	password = data.get('password')
 	pwhash = hashlib.sha256(password.encode('utf-8')).hexdigest()
 	
-	print("username: ", username)
-	print("password HASH: ", pwhash)
-	
-	with open("flaskr/data/users.json", "r") as users_fp:
+	with open('flaskr/data/users.json', 'r') as users_fp:
 		users_db = json.load(users_fp)
-		user_found = next(user for user in users_db if ((user['username'] == username and user['pwhash'] == pwhash)))
+		user_found = next((user for user in users_db if ((user['username'] == username and user['pwhash'] == pwhash))), False)
 		
 		if user_found:
 			now = datetime.datetime.now(tz=timezone.utc)
@@ -48,16 +46,43 @@ def login():
 		'jwt': None,
 	})
 
-@auth_bp.route('/signup')
+@auth_bp.route('/signup', methods=['POST'])
 def signup():
-	data = request.get_json()
-	print(data)
+	data = request.json
 	
-	username = data["username"]
-	password = data["password"]
-	name = data["name"]
-	# TODO: location
+	username = data.get('username')
+	password = data.get('password')
+	display_name = data.get('display_name')
+	zip_code = data.get('zip_code')
+	pwhash = hashlib.sha256(password.encode('utf-8')).hexdigest()
 	
-	print("username: ", username)
+	with open('flaskr/data/users.json', 'r+') as users_fp:
+		users_db = json.load(users_fp)
+		user_found = next((user for user in users_db if (user['username'] == username)), False)
+		
+		if user_found:
+			return json.dumps({
+				'success': False,
+				'error': 'Username already used.'
+			})
+		else:
+			users_db.append({
+				'id': str(uuid.uuid4()),
+				'username': username,
+				'pwhash': pwhash,
+				'display_name': display_name,
+				'zip_code': zip_code,
+				'books': [],
+			})
+			users_fp.seek(0)
+			users_fp.write(json.dumps(users_db))
+			users_fp.truncate()
+			return json.dumps({
+				'success': True,
+				'error': None,
+			})
 	
-	return 'signup page!'
+	return json.dumps({
+		'success': False,
+		'error': None,
+	})
