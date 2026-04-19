@@ -1,13 +1,25 @@
 from flask import Blueprint, request
 import json
 import uuid
+from .. import jwtman
 
 user_bp = Blueprint('user', __name__, url_prefix='/api')
 
-@user_bp.route('self/add_book', methods=['POST']) #TODO JWT token
+def check_jwt_data(encoded_jwt):
+    id = jwtman.jwt_tok_validate(encoded_jwt)
+    with open("flaskr/data/users.json", "r") as users_fp:
+        users_db = json.load(users_fp)
+        user_found = next((user for user in users_db if ((user['id'] == id))), False)
+        return user_found
+
+@user_bp.route('self/add_book', methods=['POST'])
 def request_checkout():
     data = request.json
-
+    encoded_jwt = data.get('jwt')
+    user = check_jwt_data(encoded_jwt)
+    if not user:
+        return error_return("Invalid jwt")
+    
     book_name = data.get('name')
     book_author = data.get('author')
     book_desc = data.get('desc')
@@ -25,7 +37,7 @@ def request_checkout():
                 'id': record_id,
                 'type': 'added',
                 'book': book_id,
-                'user': 'user' # TODO
+                'user': 'None'
             }
 
             new_book = {
@@ -35,7 +47,7 @@ def request_checkout():
                 'author': book_author,
                 'desc': book_desc,
                 'isbn': isbn,
-                'owner': 'owner', # TODO
+                'owner': user['username'],
                 'status_record': record_id
             }
 

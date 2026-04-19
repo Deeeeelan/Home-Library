@@ -16,7 +16,7 @@ def error_return (message):
         'error': message,
 	})
 
-def check_jwt(encoded_jwt):
+def check_jwt_data(encoded_jwt):
     id = jwtman.jwt_tok_validate(encoded_jwt)
     with open("flaskr/data/users.json", "r") as users_fp:
         users_db = json.load(users_fp)
@@ -28,7 +28,7 @@ def request_checkout(id):
     data = request.json
     encoded_jwt = data.get('jwt')
 
-    user = check_jwt(encoded_jwt)
+    user = check_jwt_data(encoded_jwt)
     if not user:
         return error_return("Invalid jwt")
 
@@ -55,7 +55,7 @@ def request_checkout(id):
     
     return error_return("Can not find book")
 
-@checkout_bp.route('checkout_req/<id>/manage', methods=['POST']) #TODO JWT token
+@checkout_bp.route('checkout_req/<id>/manage', methods=['POST'])
 def manage_checkout(id):
     data = request.json
     state = data.get('state')
@@ -64,7 +64,7 @@ def manage_checkout(id):
 
     encoded_jwt = data.get('jwt')
 
-    user = check_jwt(encoded_jwt)
+    user = check_jwt_data(encoded_jwt)
     if not user:
         return error_return("Invalid jwt")
 
